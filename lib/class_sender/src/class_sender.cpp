@@ -9,7 +9,14 @@ void Sender::setup(Light *_light) {
   light = _light;
 }
 void Sender::reset() {
+  currentMillis = millis();
+  previousMillis = millis();
+  colorNumber = 0;
+  colorInitiated = false;
+  lightNumberIncreased = false;
+  switchState = false;
 
+  Serial.println("SENDER reset");
 }
 void Sender::initColor() {
   light->initColor(light->lightNumber);
@@ -73,7 +80,7 @@ void Sender::run() {
   unsigned long elapsedTime = currentMillis - previousMillis;
 
   if (elapsedTime > 1000 && elapsedTime < 2000) {
-    Serial.println("Sender");
+    //Serial.println("Sender");
     initSignal();
     colorInitiated = false;
     lightNumberIncreased = false;
@@ -101,6 +108,7 @@ void Sender::run() {
 
     if (lightNumberIncreased != true) {
       increaseLightnumber();
+      audioProcessor.flushFft();
       lightNumberIncreased = true;
     }
   } else if (elapsedTime > 10000) {

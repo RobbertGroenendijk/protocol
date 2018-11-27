@@ -7,7 +7,12 @@ void Receiver::setup(Light* _light) {
   light = _light;
 }
 void Receiver::reset() {
-  
+  currentMillis = millis();
+  previousMillis = millis();
+  colorSend = false;
+  switchState = false;
+
+  Serial.println("RECIEVER reset");
 }
 void Receiver::initSignal() {
   currentMillis = millis();
@@ -82,7 +87,7 @@ void Receiver::run() {
   //audioProcessor.printFFT();
 
   if (elapsedTime > 1000 && elapsedTime < 2000) {
-    Serial.println("Receiver");
+    //Serial.println("Receiver");
     initSignal();
     lightNumberIncreased = false;
   } else if (elapsedTime > 2000 && elapsedTime < 3000) {
@@ -126,6 +131,7 @@ void Receiver::run() {
     if (lightNumberIncreased != true) {
       increaseLightnumber();
       lightNumberIncreased = true;
+      audioProcessor.flushFft();
     }
   } else if (elapsedTime > 10000) {
     switchState = true;

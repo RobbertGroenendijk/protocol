@@ -4,6 +4,16 @@
 void Light::setup() {
   lightNumber = 0;
 }
+void Light::reset() {
+  lightNumber = 0;
+  for (int i = 0; i < 10; i++) {
+    for (int j = 0; j < 3; j++) {
+      colorArray[i][j] = 0;
+      pushColorArray[i][j] = 0;
+    }
+  }
+  Serial.println("LIGHT reset");
+}
 void Light::run() {
 
   // forLoop to even out colors and allow fading.

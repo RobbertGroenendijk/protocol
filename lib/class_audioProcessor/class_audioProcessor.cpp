@@ -34,8 +34,19 @@ AudioProcessor::AudioProcessor() {
     mixer2.gain(i,0.75);
   }
 
-  previousMillis = 0;
-};
+  previousMillis = millis();
+}
+void AudioProcessor::reset() {
+  flushFft();
+  int mixerChannelCount = 4;
+  for (int i = 0; i < mixerChannelCount; i ++) {
+    mixer1.gain(i,0.75);
+    mixer2.gain(i,0.75);
+  }
+  previousMillis = millis();
+
+  Serial.println("AUDIOPROCESSOR reset");
+}
 void AudioProcessor::printFFT() {
   if (fft1024_1.available()) {
     // each time new FFT data is available
@@ -154,7 +165,7 @@ int AudioProcessor::getSignal() {
   }
   Serial.print("most occurring fft number:");
   Serial.println(fftBandArray[index]);
-  
+
   return fftBandArray[index];
 
 }
@@ -168,7 +179,7 @@ void AudioProcessor::toggleMixer(int _mixerNumber, float _volume) {
   }
 }
 void AudioProcessor::flushFft() {
-  for (int i = 0; i < 1000; i++){
+  for (int i = 0; i < 200; i++){
     fftBandArray[i] = 0;
   }
 }

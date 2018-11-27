@@ -12,6 +12,7 @@
 class AudioProcessor {
   public:
     void setup();
+    void reset();
     void testTone(char _c);
     void stopTone();
     void toggleMixer(int _mixerNumber, float _volume);
