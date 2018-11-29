@@ -4,7 +4,7 @@
 #include <class_receiver.h>
 #include <class_sender.h>
 
-#define BEGIN_STATE 1 // 0 = RECEIVER // 1 = SENDER
+#define BEGIN_STATE 0 // 0 = RECEIVER // 1 = SENDER
 #define BUTTON_PIN 0
 #define RECIEVER_PIN 1
 #define SENDER_PIN 2
@@ -23,6 +23,7 @@ void setup() {
   pinMode(BUTTON_PIN, INPUT);
   pinMode(RECIEVER_PIN, OUTPUT);
   pinMode(SENDER_PIN, OUTPUT);
+  pinMode(13,OUTPUT);
 
   light.setup();
   receiver.setup(&light);
@@ -46,7 +47,7 @@ void setup() {
 
 void loop() {
   int buttonState;
-
+  //digitalWrite(13,HIGH);
   buttonState = digitalRead(BUTTON_PIN);
 
   if (buttonState == HIGH) {
@@ -85,7 +86,6 @@ void loop() {
     digitalWrite(SENDER_PIN,LOW);
     digitalWrite(RECIEVER_PIN,HIGH);
   } else if (sender.state == true) {
-    Serial.println("s");
     sender.run();
     digitalWrite(SENDER_PIN,HIGH);
     digitalWrite(RECIEVER_PIN,LOW);

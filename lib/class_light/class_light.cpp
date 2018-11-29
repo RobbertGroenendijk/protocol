@@ -43,9 +43,9 @@ void Light::saveColor(int _colorChannel, int _fftBand) {
   pushColorArray[lightNumber][_colorChannel] = frequencyColor;
 }
 void Light::nextLight() {
-  if (lightNumber < 10) {
+  if (lightNumber < 9) {
     lightNumber += 1;
-  } else if (lightNumber >= 10) {
+  } else if (lightNumber >= 9) {
     lightNumber = 0;
   }
 } // End of Light::nextLight()
