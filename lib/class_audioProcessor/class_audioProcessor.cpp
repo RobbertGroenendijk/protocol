@@ -33,7 +33,7 @@ AudioProcessor::AudioProcessor() {
     mixer1.gain(i,0.75);
     mixer2.gain(i,0.75);
   }
-
+  arrayIndex = 0;
   previousMillis = millis();
 }
 void AudioProcessor::reset() {
@@ -113,6 +113,7 @@ int AudioProcessor::getHighestFFTBand(int _beginBand, int _endBand) {
 
         for (int i = _beginBand; i < _endBand; i++) {
           float fftNumber = fft1024_1.read(i);
+          //Serial.println(fftNumber);
 
           if (fftNumber > highestAmplitude) {
             highestAmplitude = fftNumber;
@@ -127,8 +128,6 @@ void AudioProcessor::saveSignal() {
   currentMillis = millis();
   unsigned long elapsedTime = currentMillis - previousMillis;
   // Listen for 1 second every 5 milliseconds
-
-  toggleMixer(1,0.75);
   if (elapsedTime > 5) {
 
     toggleMixer(1,0.75);
