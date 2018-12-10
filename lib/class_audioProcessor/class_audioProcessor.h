@@ -11,7 +11,7 @@
 
 class AudioProcessor {
   public:
-    void setup();
+    void setup(AudioControlSGTL5000* _sgtl5000,AudioSynthWaveformSine* _sine, AudioMixer4* _mixer1, AudioMixer4* _mixer2,AudioAnalyzeFFT1024* _fft1024);
     void reset();
     void testTone(char _c);
     void stopTone();
@@ -22,6 +22,12 @@ class AudioProcessor {
     int getSignal();
     void flushFft();
     void printFFT();
+
+    AudioControlSGTL5000 *sgtl5000;
+    AudioSynthWaveformSine *sine1;
+    AudioMixer4 *mixer1;
+    AudioMixer4 *mixer2;
+    AudioAnalyzeFFT1024 *fft1024_1;
 
     int arrayIndex;
     int fftBandArray[200];

@@ -4,6 +4,29 @@
 #include <class_receiver.h>
 #include <class_sender.h>
 
+#include <Audio.h>
+#include <Wire.h>
+#include <SPI.h>
+#include <SD.h>
+#include <SerialFlash.h>
+
+// GUItool: begin automatically generated code
+AudioSynthWaveformSine   sine1;          //xy=257,311
+AudioInputI2S            i2s2;           //xy=338,197
+AudioMixer4              mixer2;         //xy=482,313
+AudioMixer4              mixer1;         //xy=491,187
+AudioAnalyzeFFT1024      fft1024_1;      //xy=653,149
+AudioOutputI2S           i2s1;           //xy=662,290
+AudioControlSGTL5000     sgtl5000;     //xy=340,58
+AudioConnection          patchCord1(sine1, 0, mixer2, 0);
+AudioConnection          patchCord2(sine1, 0, mixer2, 1);
+AudioConnection          patchCord3(i2s2, 0, mixer1, 0);
+AudioConnection          patchCord4(i2s2, 1, mixer1, 1);
+AudioConnection          patchCord5(mixer2, 0, i2s1, 0);
+AudioConnection          patchCord6(mixer2, 0, i2s1, 1);
+AudioConnection          patchCord7(mixer1, fft1024_1);
+// GUItool: end automatically generated code
+
 #define BEGIN_STATE 1 // 0 = RECEIVER // 1 = SENDER
 #define BUTTON_PIN 0
 #define RECIEVER_PIN 1
@@ -28,6 +51,8 @@ void setup() {
   receiver.setup(&light);
   sender.setup(&light);
 
+  receiver.audioProcessor.setup(&sgtl5000,&sine1,&mixer1,&mixer2,&fft1024_1);
+  sender.audioProcessor.setup(&sgtl5000,&sine1,&mixer1,&mixer2,&fft1024_1);
   testAudioProcessors();
 
   buttonPressed = false;
@@ -36,6 +61,7 @@ void setup() {
   if (BEGIN_STATE == 0) {
     receiver.state = true;
     sender.state = false;
+
   } else if (BEGIN_STATE == 1) {
     receiver.state = false;
     sender.state = true;
@@ -45,6 +71,7 @@ void setup() {
 }
 
 void loop() {
+  delay(10);
   int buttonState;
   buttonState = digitalRead(BUTTON_PIN);
 
