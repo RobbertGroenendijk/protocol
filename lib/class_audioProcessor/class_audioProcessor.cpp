@@ -42,14 +42,14 @@ void AudioProcessor::printFFT() {
   if (fft1024_1->available()) {
     // each time new FFT data is available
     // print it all to the Arduino Serial Monitor
-    Serial.print("FFT: ");
+    //Serial.print("FFT: ");
     for (int i=0; i<40; i++) {
       float n = fft1024_1->read(i);
       if (n >= 0.01) {
-        Serial.print(n);
-        Serial.print(" ");
+        //Serial.print(n);
+        //Serial.print(" ");
       } else {
-        Serial.print("  -  "); // don't print "0.00"
+        //Serial.print("  -  "); // don't print "0.00"
       }
     }
     Serial.println();
@@ -150,8 +150,8 @@ int AudioProcessor::getSignal() {
       index = i;
     }
   }
-  Serial.print("most occurring fft number:");
-  Serial.println(fftBandArray[index]);
+  //Serial.print("most occurring fft number:");
+  //Serial.println(fftBandArray[index]);
 
   return fftBandArray[index];
 

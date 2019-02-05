@@ -1,9 +1,11 @@
 #include <Arduino.h>
 
+// Personal includes
 #include <class_light.h>
 #include <class_receiver.h>
 #include <class_sender.h>
 
+// Teensy audio includes
 #include <Audio.h>
 #include <Wire.h>
 #include <SPI.h>
@@ -29,8 +31,8 @@ AudioConnection          patchCord7(mixer1, fft1024_1);
 
 #define BEGIN_STATE 1 // 0 = RECEIVER // 1 = SENDER
 #define BUTTON_PIN 0
-#define RECIEVER_PIN 1
-#define SENDER_PIN 2
+#define RECIEVER_PIN 33
+#define SENDER_PIN 34
 
 Light light;
 Sender sender;
@@ -47,7 +49,10 @@ void setup() {
   pinMode(RECIEVER_PIN, OUTPUT);
   pinMode(SENDER_PIN, OUTPUT);
 
-  light.setup();
+  // Random seeding based on analog input
+  pinMode(16,INPUT);
+  randomSeed(analogRead(16));
+
   receiver.setup(&light);
   sender.setup(&light);
 
@@ -72,6 +77,7 @@ void setup() {
 
 void loop() {
   delay(10);
+
   int buttonState;
   buttonState = digitalRead(BUTTON_PIN);
 
@@ -108,12 +114,12 @@ void loop() {
 
   if (receiver.state == true) {
     receiver.run();
-    digitalWrite(SENDER_PIN,LOW);
-    digitalWrite(RECIEVER_PIN,HIGH);
+    analogWrite(SENDER_PIN,0);
+    analogWrite(RECIEVER_PIN,255);
   } else if (sender.state == true) {
     sender.run();
-    digitalWrite(SENDER_PIN,HIGH);
-    digitalWrite(RECIEVER_PIN,LOW);
+    analogWrite(SENDER_PIN,255);
+    analogWrite(RECIEVER_PIN,0);
   }
 
   if (receiver.switchState == true) {
